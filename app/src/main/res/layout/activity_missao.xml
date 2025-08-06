@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/statusTitle"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30pt"
+        android:shadowColor="@color/azul_branca_clara"
+        android:shadowRadius="5"
+        android:text="missão"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_fdc"
+        style="@style/StandardText"
+        android:shadowColor="@color/azul_branca_clara"
+        android:shadowRadius="6"
+        android:textSize="12pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fortalecimento do corpo"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintWidth_percent="1"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintVertical_bias="0.25"
+    />
+
+    <!-- Botão central inferior existente -->
+    <ImageButton
+        android:id="@+id/btn_back_main"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:src="@drawable/missao"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/back_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintVertical_bias="0.94" />
+
+    <!-- Botão 1 - 0° -->
+    <ImageButton
+        android:id="@+id/btn1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/creditos"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/creditos_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintVertical_bias="0.94"
+        android:visibility="gone"
+
+        />
+
+    <!-- Botão 2 - 30° -->
+    <ImageButton
+        android:id="@+id/btn2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/inventario"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/inventario_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintVertical_bias="0.87"
+        android:visibility="gone"
+        />
+
+    <!-- Botão 3 - 60° -->
+    <ImageButton
+        android:id="@+id/btn3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/maps"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/maps_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintVertical_bias="0.82"
+        android:visibility="gone"
+        />
+
+    <!-- Botão 4 - 90° -->
+    <ImageButton
+        android:id="@+id/btn4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/status"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/missao_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.79"
+        android:visibility="gone"
+        />
+
+    <!-- Botão 5 - 120° -->
+    <ImageButton
+        android:id="@+id/btn5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/loja"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/loja_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintVertical_bias="0.82"
+        android:visibility="gone"
+        />
+
+    <!-- Botão 6 - 150° -->
+    <ImageButton
+        android:id="@+id/btn6"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ajuda"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/ajuda_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintVertical_bias="0.87"
+        android:visibility="gone"
+        />
+
+    <!-- Botão 7 - 180° -->
+    <ImageButton
+        android:id="@+id/btn7"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/configuracoes"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/configuracoes_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.94"
+        android:visibility="gone"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

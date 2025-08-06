@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/status_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:ignore="ExtraText">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/statusTitle"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30pt"
+        android:shadowColor="@color/azul_branca_clara"
+        android:shadowRadius="5"
+        android:text="JANELA DE STATUS"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Coluna Esquerda -->
+    <LinearLayout
+        android:id="@+id/leftColumn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20pt"
+        android:layout_marginTop="2pt"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_back_main"
+        app:layout_constraintEnd_toStartOf="@id/rightColumn"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusTitle"
+        app:layout_constraintVertical_bias="0.25">
+
+        <TextView
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOME:" />
+
+        <TextView
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CLASSE: NENHUMA" />
+
+        <TextView
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TÍTULO: NENHUMA" />
+
+        <!-- Linha branca entre TÍTULO e HP -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1pt"
+            android:layout_marginTop="4pt"
+            android:layout_marginBottom="4pt"
+            android:layout_marginStart="0pt"
+            android:layout_marginEnd="0pt"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/txt_hp"
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HP: 100"
+            android:layout_marginTop="4pt" />
+
+        <!-- Linha branca entre HP e MP -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1pt"
+            android:layout_marginTop="4pt"
+            android:layout_marginBottom="4pt"
+            android:layout_marginStart="0pt"
+            android:layout_marginEnd="0pt"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:id="@+id/txt_mp"
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MP: 10"
+            android:layout_marginTop="4pt" />
+
+        <Button
+            android:id="@+id/btn_forca"
+            style="@style/MinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FORÇA: 0"
+            android:layout_margin="1pt"
+            android:padding="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Botão para aumentar força" />
+
+        <Button
+            android:id="@+id/btn_agilidade"
+            style="@style/MinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AGILIDADE: 0"
+            android:layout_margin="1pt"
+            android:padding="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Botão para aumentar agilidade" />
+
+        <Button
+            android:id="@+id/btn_sentidos"
+            style="@style/MinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SENTIDOS: 0"
+            android:layout_margin="1pt"
+            android:padding="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Botão para aumentar sentidos" />
+    </LinearLayout>
+
+    <!-- Coluna Direita -->
+    <LinearLayout
+        android:id="@+id/rightColumn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_back_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/leftColumn"
+        app:layout_constraintTop_toBottomOf="@id/statusTitle"
+        app:layout_constraintVertical_bias="0.23">
+
+        <TextView
+            android:id="@+id/txt_nivel"
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NÍVEL: 1" />
+
+        <TextView
+            style="@style/StandardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FADIGA: 0" />
+
+        <TextView
+            style="@style/MinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:layout_marginBottom="120pt" />
+
+        <Button
+            android:id="@+id/btn_vitalidade"
+            style="@style/MinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VITALIDADE: 0"
+            android:layout_margin="1pt"
+            android:padding="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Botão para aumentar vitalidade" />
+
+        <Button
+            android:id="@+id/btn_inteligencia"
+            style="@style/MinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INTELIGÊNCIA: 0"
+            android:layout_margin="1pt"
+            android:padding="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Botão para aumentar inteligência" />
+    </LinearLayout>
+
+    <!-- Botão central inferior existente -->
+    <ImageButton
+        android:id="@+id/btn_back_main"
+        android:layout_width="50dp"
+        android:layout_height="48dp"
+        android:src="@drawable/status"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/back_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintVertical_bias="0.94" />
+
+    <!-- Botão 1 - 0° -->
+    <ImageButton
+        android:id="@+id/btn1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/creditos"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/creditos_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintVertical_bias="0.94"
+        android:visibility="gone" />
+
+    <!-- Botão 2 - 30° -->
+    <ImageButton
+        android:id="@+id/btn2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/inventario"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/inventario_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintVertical_bias="0.87"
+        android:visibility="gone" />
+
+    <!-- Botão 3 - 60° -->
+    <ImageButton
+        android:id="@+id/btn3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/maps"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/maps_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintVertical_bias="0.82"
+        android:visibility="gone" />
+
+    <!-- Botão 4 - 90° -->
+    <ImageButton
+        android:id="@+id/btn4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/missao"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/missao_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.79"
+        android:visibility="gone" />
+
+    <!-- Botão 5 - 120° -->
+    <ImageButton
+        android:id="@+id/btn5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/loja"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/loja_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintVertical_bias="0.82"
+        android:visibility="gone" />
+
+    <!-- Botão 6 - 150° -->
+    <ImageButton
+        android:id="@+id/btn6"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ajuda"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/ajuda_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintVertical_bias="0.87"
+        android:visibility="gone" />
+
+    <!-- Botão 7 - 180° -->
+    <ImageButton
+        android:id="@+id/btn7"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/configuracoes"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/configuracoes_button"
+        style="@style/CustomImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintVertical_bias="0.94"
+        android:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

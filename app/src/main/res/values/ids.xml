@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tv_missao" type="id" />
+    <item name="tv_orientacao" type="id" />
+    <item name="btn_flexoes" type="id" />
+    <item name="btn_abdominais" type="id" />
+    <item name="btn_agachamentos" type="id" />
+    <item name="btn_correr" type="id" />
+    <item name="btn_back" type="id" />
+    <item name="btn_reco2" type="id" />
+    <item name="btn_atalho" type="id" />
+</resources>
