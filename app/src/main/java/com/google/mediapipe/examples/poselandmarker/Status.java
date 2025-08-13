@@ -6,10 +6,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Status extends AppCompatActivity {
 
     private TextView txt_hp, txt_mp, txt_nivel;
+    private ProgressBar hpProgressBar, mpProgressBar; // Barra de MP adicionada
     private int hp, mp;
     private int hpi, hpp = 100;
     private int mpi, mpp = 10;
@@ -27,33 +29,37 @@ public class Status extends AppCompatActivity {
     private ImageButton btnToggleMenu;
     private Button btn_forca, btn_vitalidade, btn_agilidade, btn_sentidos, btn_inteligencia;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estatus);
         GameStateManager.initialize(this);
 
-
+        // Inicializar TextViews
         txt_hp = findViewById(R.id.txt_hp);
         txt_mp = findViewById(R.id.txt_mp);
         txt_nivel = findViewById(R.id.txt_nivel);
-        updateNivel();
 
+        // Inicializar ProgressBars
+        hpProgressBar = findViewById(R.id.hp_progress_bar);
+        mpProgressBar = findViewById(R.id.mp_progress_bar); // Inicialização da barra de MP
+
+        // Inicializar Botões
+        btn_forca = findViewById(R.id.btn_forca);
+        btn_vitalidade = findViewById(R.id.btn_vitalidade);
+        btn_agilidade = findViewById(R.id.btn_agilidade);
+        btn_sentidos = findViewById(R.id.btn_sentidos);
+        btn_inteligencia = findViewById(R.id.btn_inteligencia);
+
+        updateNivel();
         calcularStatus();
         atualizarStatusUI();
 
-        btn_forca = findViewById(R.id.btn_forca);
-         btn_vitalidade = findViewById(R.id.btn_vitalidade);
-         btn_agilidade = findViewById(R.id.btn_agilidade);
-         btn_sentidos = findViewById(R.id.btn_sentidos);
-         btn_inteligencia = findViewById(R.id.btn_inteligencia);
-
-// Atualiza o texto inicial dos botões
+        // Atualiza o texto inicial dos botões
         updateButtonTexts();
-        if (GameStateManager.getPontos()>0) {
-// Listeners
+
+        // Configurar listeners dos botões
+        if (GameStateManager.getPontos() > 0) {
             btn_forca.setOnClickListener(v -> {
                 GameStateManager.setForca(GameStateManager.getForca() + 1);
                 updateButtonTexts();
@@ -89,6 +95,7 @@ public class Status extends AppCompatActivity {
                 atualizarStatusUI();
             });
         }
+
         // Inicializa botões do menu
         menuButtons = new ImageButton[]{
                 findViewById(R.id.btn1),
@@ -99,8 +106,6 @@ public class Status extends AppCompatActivity {
                 findViewById(R.id.btn6),
                 findViewById(R.id.btn7)
         };
-
-
 
         // Inicializa botão de toggle
         btnToggleMenu = findViewById(R.id.btn_back_main);
@@ -140,35 +145,29 @@ public class Status extends AppCompatActivity {
 
             if (animate) {
                 if (visibility == View.VISIBLE) {
-                    // Define visibilidade para VISIBLE e alpha para 0
                     button.setVisibility(View.VISIBLE);
                     button.setAlpha(0f);
 
-                    // Usa post para obter a posição final após o layout
                     button.post(() -> {
                         float layoutX = button.getX();
                         float layoutY = button.getY();
                         float startTranslationX = toggleX - layoutX;
                         float startTranslationY = toggleY - layoutY;
 
-                        // Define a translação inicial
                         button.setTranslationX(startTranslationX);
                         button.setTranslationY(startTranslationY);
 
-                        // Cria animações
                         ObjectAnimator animX = ObjectAnimator.ofFloat(button, "translationX", startTranslationX, 0f);
                         ObjectAnimator animY = ObjectAnimator.ofFloat(button, "translationY", startTranslationY, 0f);
                         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(button, "alpha", 0f, 1f);
 
-                        // Combina animações em um AnimatorSet
                         AnimatorSet set = new AnimatorSet();
                         set.playTogether(animX, animY, alphaAnim);
                         set.setDuration(350);
-                        set.setStartDelay(index * 50); // Efeito cascata
+                        set.setStartDelay(index * 50);
                         set.start();
                     });
                 } else {
-                    // Animação de saída: Deslizamento + Fade Out
                     float layoutX = button.getX();
                     float layoutY = button.getY();
                     float endTranslationX = toggleX - layoutX;
@@ -181,20 +180,19 @@ public class Status extends AppCompatActivity {
                     AnimatorSet set = new AnimatorSet();
                     set.playTogether(animX, animY, alphaAnim);
                     set.setDuration(350);
-                    set.setStartDelay(index * 50); // Efeito cascata
+                    set.setStartDelay(index * 50);
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             button.setVisibility(View.GONE);
                             button.setTranslationX(0f);
                             button.setTranslationY(0f);
-                            button.setAlpha(1f); // Reseta alpha
+                            button.setAlpha(1f);
                         }
                     });
                     set.start();
                 }
             } else {
-                // Sem animação (para inicialização)
                 button.setVisibility(visibility);
                 button.setTranslationX(0f);
                 button.setTranslationY(0f);
@@ -208,16 +206,35 @@ public class Status extends AppCompatActivity {
     }
 
     private void updateButtonTexts() {
-        btn_forca.setText("Força: " + GameStateManager.getForca());
-        btn_vitalidade.setText("Vitalidade: " + GameStateManager.getVitalidade());
-        btn_agilidade.setText("Agilidade: " + GameStateManager.getAgilidade());
-        btn_sentidos.setText("Sentidos: " + GameStateManager.getSentidos());
-        btn_inteligencia.setText("Inteligência: " + GameStateManager.getInteligencia());
-
+        if (btn_forca != null) {
+            btn_forca.setText("Força: " + GameStateManager.getForca());
+        } else {
+            Log.e("Status", "Botão btn_forca não encontrado no layout");
+        }
+        if (btn_vitalidade != null) {
+            btn_vitalidade.setText("Vitalidade: " + GameStateManager.getVitalidade());
+        } else {
+            Log.e("Status", "Botão btn_vitalidade não encontrado no layout");
+        }
+        if (btn_agilidade != null) {
+            btn_agilidade.setText("Agilidade: " + GameStateManager.getAgilidade());
+        } else {
+            Log.e("Status", "Botão btn_agilidade não encontrado no layout");
+        }
+        if (btn_sentidos != null) {
+            btn_sentidos.setText("Sentidos: " + GameStateManager.getSentidos());
+        } else {
+            Log.e("Status", "Botão btn_sentidos não encontrado no layout");
+        }
+        if (btn_inteligencia != null) {
+            btn_inteligencia.setText("Inteligência: " + GameStateManager.getInteligencia());
+        } else {
+            Log.e("Status", "Botão btn_inteligencia não encontrado no layout");
+        }
     }
 
     private void updateNivel() {
-        txt_nivel.setText("NIVEL: " + GameStateManager.getLevel());
+        txt_nivel.setText(" " + GameStateManager.getLevel());
     }
 
     private void calcularStatus() {
@@ -230,12 +247,34 @@ public class Status extends AppCompatActivity {
 
         mpi = inteligencia * 100;
         mp = mpi + (mpp + 10 * nivel - 10);
+
+        // Atualizar a barra de vida
+        if (hpProgressBar != null) {
+            int maxHp = hpi + (hpp + 10 * nivel - 10);
+            hpProgressBar.setMax(maxHp);
+            hpProgressBar.setProgress(hp > maxHp ? maxHp : hp);
+        }
+
+        // Atualizar a barra de mana
+        if (mpProgressBar != null) {
+            int maxMp = mpi + (mpp + 10 * nivel - 10);
+            mpProgressBar.setMax(maxMp);
+            mpProgressBar.setProgress(mp > maxMp ? maxMp : mp);
+        }
     }
 
     private void atualizarStatusUI() {
-        txt_hp.setText("HP: " + hp);
-        txt_mp.setText("MP: " + mp);
+        if (txt_hp != null) {
+            txt_hp.setText("HP: " + hp);
+        }
+        if (txt_mp != null) {
+            txt_mp.setText("MP: " + mp);
+        }
+        if (hpProgressBar != null) {
+            hpProgressBar.setProgress(hp);
+        }
+        if (mpProgressBar != null) {
+            mpProgressBar.setProgress(mp);
+        }
     }
-
-
 }
