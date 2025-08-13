@@ -6,7 +6,7 @@
     android:id="@+id/status_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/statusscren"
     tools:ignore="ExtraText">
 
     <!-- Título -->
@@ -18,7 +18,6 @@
         android:layout_marginTop="30pt"
         android:shadowColor="@color/azul_branca_clara"
         android:shadowRadius="5"
-        android:text="JANELA DE STATUS"
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +25,104 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Coluna Esquerda -->
+    <!-- TextView "Jhoko" -->
+    <TextView
+        android:id="@+id/txt_jhoko"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JHOKO"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintVertical_bias="0.37" />
+
+    <!-- TextView "Pugilista" -->
+    <TextView
+        android:id="@+id/txt_pugilista"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PUGILISTA"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintVertical_bias="0.35" />
+
+    <!-- TextView "Com os punhos" -->
+    <TextView
+        android:id="@+id/txt_com_os_punhos"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COM OS PUNHOS"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintVertical_bias="0.485" />
+
+    <!-- TextView "txt_nivel" -->
+    <TextView
+        android:id="@+id/txt_nivel"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.74"
+        app:layout_constraintVertical_bias="0.33" />
+
+    <!-- TextView "0" -->
+    <TextView
+        android:id="@+id/txt_zero"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <!-- TextView "txt_hp" -->
+    <TextView
+        android:id="@+id/txt_hp"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HP: 100"
+        android:layout_marginTop="4pt"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/txt_com_os_punhos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.2" />
+
+    <!-- TextView "txt_mp" -->
+    <TextView
+        android:id="@+id/txt_mp"
+        style="@style/StandardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MP: 10"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/txt_hp"
+        app:layout_constraintStart_toStartOf="@id/txt_hp" />
+
+    <!-- Coluna Esquerda (mantida para botões) -->
     <LinearLayout
         android:id="@+id/leftColumn"
         android:layout_width="0dp"
@@ -39,62 +135,8 @@
         app:layout_constraintEnd_toStartOf="@id/rightColumn"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statusTitle"
+        app:layout_constraintTop_toBottomOf="@id/txt_mp"
         app:layout_constraintVertical_bias="0.25">
-
-        <TextView
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NOME:" />
-
-        <TextView
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CLASSE: NENHUMA" />
-
-        <TextView
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TÍTULO: NENHUMA" />
-
-        <!-- Linha branca entre TÍTULO e HP -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1pt"
-            android:layout_marginTop="4pt"
-            android:layout_marginBottom="4pt"
-            android:layout_marginStart="0pt"
-            android:layout_marginEnd="0pt"
-            android:background="@android:color/white" />
-
-        <TextView
-            android:id="@+id/txt_hp"
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HP: 100"
-            android:layout_marginTop="4pt" />
-
-        <!-- Linha branca entre HP e MP -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1pt"
-            android:layout_marginTop="4pt"
-            android:layout_marginBottom="4pt"
-            android:layout_marginStart="0pt"
-            android:layout_marginEnd="0pt"
-            android:background="@android:color/white" />
-
-        <TextView
-            android:id="@+id/txt_mp"
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MP: 10"
-            android:layout_marginTop="4pt" />
 
         <Button
             android:id="@+id/btn_forca"
@@ -104,6 +146,7 @@
             android:text="FORÇA: 0"
             android:layout_margin="1pt"
             android:padding="0dp"
+            android:visibility="invisible"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Botão para aumentar força" />
 
@@ -115,6 +158,7 @@
             android:text="AGILIDADE: 0"
             android:layout_margin="1pt"
             android:padding="0dp"
+            android:visibility="invisible"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Botão para aumentar agilidade" />
 
@@ -126,11 +170,12 @@
             android:text="SENTIDOS: 0"
             android:layout_margin="1pt"
             android:padding="0dp"
+            android:visibility="invisible"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Botão para aumentar sentidos" />
     </LinearLayout>
 
-    <!-- Coluna Direita -->
+    <!-- Coluna Direita (mantida para botões) -->
     <LinearLayout
         android:id="@+id/rightColumn"
         android:layout_width="0dp"
@@ -144,23 +189,11 @@
         app:layout_constraintVertical_bias="0.23">
 
         <TextView
-            android:id="@+id/txt_nivel"
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NÍVEL: 1" />
-
-        <TextView
-            style="@style/StandardText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FADIGA: 0" />
-
-        <TextView
             style="@style/MinText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" "
+            android:visibility="invisible"
             android:layout_marginBottom="120pt" />
 
         <Button
@@ -171,6 +204,7 @@
             android:text="VITALIDADE: 0"
             android:layout_margin="1pt"
             android:padding="0dp"
+            android:visibility="invisible"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Botão para aumentar vitalidade" />
 
@@ -182,9 +216,46 @@
             android:text="INTELIGÊNCIA: 0"
             android:layout_margin="1pt"
             android:padding="0dp"
+            android:visibility="invisible"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Botão para aumentar inteligência" />
     </LinearLayout>
+
+    <!-- Barra de Vida (ProgressBar) -->
+    <ProgressBar
+        android:id="@+id/hp_progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/hp_progress_drawable"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintVertical_bias="0.607"
+        app:layout_constraintWidth_percent="0.58"
+        app:layout_constraintHeight_percent="0.026" />
+
+    <!-- Barra de Mana (ProgressBar) -->
+    <ProgressBar
+        android:id="@+id/mp_progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:max="100"
+        android:progress="10"
+        android:progressDrawable="@drawable/mp_progress_drawable"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintWidth_percent="0.58"
+        app:layout_constraintHeight_percent="0.026" />
 
     <!-- Botão central inferior existente -->
     <ImageButton
@@ -198,6 +269,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitCenter"
         android:layout_marginBottom="28dp"
         app:layout_constraintVertical_bias="0.94" />
 
@@ -210,6 +282,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/creditos_button"
         style="@style/CustomImageButton"
+        android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -227,6 +300,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/inventario_button"
         style="@style/CustomImageButton"
+        android:scaleType="fitCenter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -241,6 +315,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/maps"
+        android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:contentDescription="@string/maps_button"
         style="@style/CustomImageButton"
@@ -256,23 +331,25 @@
     <ImageButton
         android:id="@+id/btn4"
         android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/missao"
         android:background="@android:color/transparent"
         android:contentDescription="@string/missao_button"
+        android:scaleType="fitCenter"
         style="@style/CustomImageButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.79"
+        app:layout_constraintVertical_bias="0.82"
         android:visibility="gone" />
 
     <!-- Botão 5 - 120° -->
     <ImageButton
         android:id="@+id/btn5"
         android:layout_width="48dp"
+        android:scaleType="fitCenter"
         android:layout_height="48dp"
         android:src="@drawable/loja"
         android:background="@android:color/transparent"
@@ -290,6 +367,7 @@
     <ImageButton
         android:id="@+id/btn6"
         android:layout_width="48dp"
+        android:scaleType="fitCenter"
         android:layout_height="48dp"
         android:src="@drawable/ajuda"
         android:background="@android:color/transparent"
@@ -307,6 +385,7 @@
     <ImageButton
         android:id="@+id/btn7"
         android:layout_width="48dp"
+        android:scaleType="fitCenter"
         android:layout_height="48dp"
         android:src="@drawable/configuracoes"
         android:background="@android:color/transparent"

@@ -21,21 +21,21 @@
     </style>
 
     <style name="StandardText">
-        <item name="android:textSize">17pt</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:fontFamily">@font/bebasneue</item>
+        <item name="android:textSize">14pt</item>
+        <item name="android:textColor">#a0e6e6</item>
+        <item name="android:fontFamily">@font/rajdhani</item>
     </style>
 
     <style name="TitleText">
         <item name="android:textSize">24pt</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:fontFamily">@font/bebasneue</item>
+        <item name="android:textColor">#a0e6e6</item>
+        <item name="android:fontFamily">@font/rajdhani</item>
     </style>
 
     <style name="MinText">
         <item name="android:textSize">10pt</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:fontFamily">@font/bebasneue</item>
+        <item name="android:textColor">#a0e6e6</item>
+        <item name="android:fontFamily">@font/rajdhani</item>
     </style>
 
     <style name="BottomSheetSpinnerItemStyle" parent="Widget.AppCompat.Light.DropDownItem.Spinner">

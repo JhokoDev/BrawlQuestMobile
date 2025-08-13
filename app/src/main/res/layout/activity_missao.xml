@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/missoesscrren">
 
     <!-- Título -->
     <TextView
@@ -15,7 +15,7 @@
         android:layout_marginTop="30pt"
         android:shadowColor="@color/azul_branca_clara"
         android:shadowRadius="5"
-        android:text="missão"
+
         android:textColor="@android:color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,8 @@
         style="@style/StandardText"
         android:shadowColor="@color/azul_branca_clara"
         android:shadowRadius="6"
-        android:textSize="12pt"
+        android:textSize="10pt"
+        android:textAlignment="viewStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Fortalecimento do corpo"
@@ -42,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintVertical_bias="0.35"
     />
 
     <!-- Botão central inferior existente -->
@@ -50,6 +51,7 @@
         android:id="@+id/btn_back_main"
         android:layout_width="50dp"
         android:layout_height="48dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/missao"
         android:background="@android:color/transparent"
         android:contentDescription="@string/back_button"
@@ -64,6 +66,7 @@
     <ImageButton
         android:id="@+id/btn1"
         android:layout_width="48dp"
+        android:scaleType="fitCenter"
         android:layout_height="48dp"
         android:src="@drawable/creditos"
         android:background="@android:color/transparent"
@@ -83,6 +86,7 @@
     <ImageButton
         android:id="@+id/btn2"
         android:layout_width="48dp"
+        android:scaleType="fitCenter"
         android:layout_height="48dp"
         android:src="@drawable/inventario"
         android:background="@android:color/transparent"
@@ -102,6 +106,7 @@
         android:id="@+id/btn3"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/maps"
         android:background="@android:color/transparent"
         android:contentDescription="@string/maps_button"
@@ -118,6 +123,7 @@
     <!-- Botão 4 - 90° -->
     <ImageButton
         android:id="@+id/btn4"
+        android:scaleType="fitCenter"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/status"
@@ -139,6 +145,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/loja"
+        android:scaleType="fitCenter"
         android:background="@android:color/transparent"
         android:contentDescription="@string/loja_button"
         style="@style/CustomImageButton"
@@ -156,6 +163,7 @@
         android:id="@+id/btn6"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/ajuda"
         android:background="@android:color/transparent"
         android:contentDescription="@string/ajuda_button"
@@ -172,6 +180,7 @@
     <!-- Botão 7 - 180° -->
     <ImageButton
         android:id="@+id/btn7"
+        android:scaleType="fitCenter"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/configuracoes"
