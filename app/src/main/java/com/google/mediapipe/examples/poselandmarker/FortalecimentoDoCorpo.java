@@ -246,10 +246,10 @@ public class FortalecimentoDoCorpo extends AppCompatActivity {
         String est3 = (agac >= meta) ? "COMPLETO" : "INCOMPLETO";
         String est4 = (corr >= metaC) ? "COMPLETO" : "INCOMPLETO";
 
-        btnFlexoes.setText("FLEXÕES [" + est1 + "] [" + flex + "/" + meta + "]");
-        btnAbdominais.setText("ABDOMINAIS [" + est2 + "] [" + abdo + "/" + meta + "]");
-        btnAgachamentos.setText("AGACHAMENTOS [" + est3 + "] [" + agac + "/" + meta + "]");
-        btnCorrer.setText("CORRER [" + est4 + "] [" + GameStateManager.getCorr() + "/" + metaC + "Km]");
+        btnFlexoes.setText(flex + " / " + meta);
+        btnAbdominais.setText(abdo + " / " + meta);
+        btnAgachamentos.setText(agac + " / " + meta);
+        btnCorrer.setText(GameStateManager.getCorr() + " / " + metaC);
 
         btnReco2.setVisibility(((corr == 2 && flex == 40 && agac == 40 && abdo == 40 && recs) ||
                 (corr == 1 && flex == 20 && agac == 20 && abdo == 20 && recs)) ? View.VISIBLE : View.GONE);
