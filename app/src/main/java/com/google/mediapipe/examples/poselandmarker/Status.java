@@ -124,10 +124,14 @@ public class Status extends AppCompatActivity {
             startActivity(new Intent(Status.this, Missao.class));
         });
 
+        menuButtons[2].setOnClickListener(v -> {
+            startActivity(new Intent(Status.this, Gps.class));
+        });
+
         // Ações de teste para outros botões
         menuButtons[0].setOnClickListener(v -> showToast("Botão 1"));
         menuButtons[1].setOnClickListener(v -> showToast("Botão 2"));
-        menuButtons[2].setOnClickListener(v -> showToast("Botão 3"));
+       // menuButtons[2].setOnClickListener(v -> showToast("Botão 3"));
         menuButtons[4].setOnClickListener(v -> showToast("Botão 5"));
         menuButtons[5].setOnClickListener(v -> showToast("Botão 6"));
         menuButtons[6].setOnClickListener(v -> showToast("Botão 7"));
