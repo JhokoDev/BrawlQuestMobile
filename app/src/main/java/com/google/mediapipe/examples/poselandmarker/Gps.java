@@ -2,7 +2,9 @@ package com.google.mediapipe.examples.poselandmarker;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -40,21 +42,27 @@ public class Gps extends AppCompatActivity {
     private static final String MAPTILER_STYLE = "streets-v2-dark";
     private List<PointOfInterest> poiList = new ArrayList<>();
     private final Handler locationHandler = new Handler(Looper.getMainLooper());
+    private final Handler animationHandler = new Handler(Looper.getMainLooper());
     private GeoPoint lastKnownLocation;
     private static final long LOCATION_UPDATE_INTERVAL = 10000; // 10 segundos
+    private static final long ANIMATION_FRAME_INTERVAL = 200; // 200ms por frame (150% mais rápido)
+    private static final int BASE_ICON_SIZE = 200; // Tamanho padrão do ícone em pixels no zoom base
+    private static final double BASE_ZOOM_LEVEL = 18.0; // Zoom base para o tamanho padrão
 
-    // Classe para representar um Portal para Dungeon
     public static class PointOfInterest {
         private GeoPoint location;
         private String name;
-        private String type; // Ex.: "dungeon_natureza", "dungeon_histórico"
+        private String type;
         private double preferenceScore;
+        private int[] animationFrames;
+        private Marker marker;
 
-        public PointOfInterest(GeoPoint location, String name, String type, double preferenceScore) {
+        public PointOfInterest(GeoPoint location, String name, String type, double preferenceScore, int[] animationFrames) {
             this.location = location;
             this.name = name;
             this.type = type;
             this.preferenceScore = preferenceScore;
+            this.animationFrames = animationFrames;
         }
 
         public GeoPoint getLocation() { return location; }
@@ -62,6 +70,9 @@ public class Gps extends AppCompatActivity {
         public String getType() { return type; }
         public double getPreferenceScore() { return preferenceScore; }
         public void setPreferenceScore(double score) { this.preferenceScore = score; }
+        public int[] getAnimationFrames() { return animationFrames; }
+        public void setMarker(Marker marker) { this.marker = marker; }
+        public Marker getMarker() { return marker; }
     }
 
     @Override
@@ -76,7 +87,6 @@ public class Gps extends AppCompatActivity {
         mapView = findViewById(R.id.mapFragment);
         mapView.setMultiTouchControls(true);
 
-        // TileSource do MapTiler
         OnlineTileSourceBase mapTilerSource = new OnlineTileSourceBase(
                 "MapTilerRaster", 0, 22, 256, ".png",
                 new String[]{"https://api.maptiler.com/maps/" + MAPTILER_STYLE + "/"}
@@ -93,7 +103,6 @@ public class Gps extends AppCompatActivity {
             }
         };
 
-        // Fallback para OpenStreetMap
         OnlineTileSourceBase fallbackSource = new XYTileSource(
                 "OSMFallback", 0, 20, 256, ".png",
                 new String[]{"https://tile.openstreetmap.org/"}
@@ -111,106 +120,144 @@ public class Gps extends AppCompatActivity {
         mapController.setZoom(18.0);
         mapController.setCenter(new GeoPoint(0.0, 0.0));
 
-        // Ativa localização
         myLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this), mapView);
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.enableFollowLocation();
         myLocationOverlay.runOnFirstFix(() -> runOnUiThread(() -> {
             if (myLocationOverlay.getMyLocation() != null) {
                 lastKnownLocation = myLocationOverlay.getMyLocation();
+                Log.d("GPS", "Localização inicial: lat=" + lastKnownLocation.getLatitude() + ", lon=" + lastKnownLocation.getLongitude());
                 mapController.animateTo(lastKnownLocation);
                 loadPoisFromOverpass(lastKnownLocation);
                 Toast.makeText(Gps.this, "Localização encontrada", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.e("GPS", "Localização inicial não disponível");
+                Toast.makeText(Gps.this, "Localização não encontrada", Toast.LENGTH_SHORT).show();
             }
         }));
         mapView.getOverlays().add(myLocationOverlay);
 
-        // Monitora mudanças de localização
         startLocationUpdates();
 
-        // Botão de centralização
         Button btnCenterLocation = findViewById(R.id.btnCenterLocation);
         btnCenterLocation.setOnClickListener(v -> {
             if (myLocationOverlay.getMyLocation() != null) {
                 lastKnownLocation = myLocationOverlay.getMyLocation();
+                Log.d("GPS", "Centralizando em: lat=" + lastKnownLocation.getLatitude() + ", lon=" + lastKnownLocation.getLongitude());
                 mapController.animateTo(lastKnownLocation);
                 loadPoisFromOverpass(lastKnownLocation);
             } else {
+                Log.e("GPS", "Localização não disponível para centralização");
                 Toast.makeText(this, "Localização não disponível", Toast.LENGTH_SHORT).show();
             }
         });
 
         requestPermissionsIfNecessary(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.INTERNET
         });
 
         Toast.makeText(this, "Carregando mapa...", Toast.LENGTH_LONG).show();
     }
 
-    // Monitora mudanças de localização periodicamente
     private void startLocationUpdates() {
         locationHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (myLocationOverlay.getMyLocation() != null) {
                     GeoPoint currentLocation = myLocationOverlay.getMyLocation();
-                    if (lastKnownLocation == null || calculateDistance(lastKnownLocation, currentLocation) > 50) { // Atualiza se mover > 50m
+                    Log.d("GPS", "Localização atual: lat=" + currentLocation.getLatitude() + ", lon=" + currentLocation.getLongitude());
+                    if (lastKnownLocation == null || calculateDistance(lastKnownLocation, currentLocation) > 50) {
                         lastKnownLocation = currentLocation;
                         loadPoisFromOverpass(lastKnownLocation);
                     }
+                } else {
+                    Log.e("GPS", "Localização não disponível");
                 }
                 locationHandler.postDelayed(this, LOCATION_UPDATE_INTERVAL);
             }
         }, LOCATION_UPDATE_INTERVAL);
     }
 
-    // Carrega POIs dinâmicos da Overpass API
     private void loadPoisFromOverpass(GeoPoint userLocation) {
-        if (userLocation == null) return;
+        if (userLocation == null) {
+            Log.e("Overpass", "Localização do usuário é nula");
+            runOnUiThread(() -> Toast.makeText(Gps.this, "Localização não disponível", Toast.LENGTH_SHORT).show());
+            return;
+        }
         new Thread(() -> {
             try {
                 OkHttpClient client = new OkHttpClient();
                 String lat = String.valueOf(userLocation.getLatitude());
                 String lon = String.valueOf(userLocation.getLongitude());
-                String query = "[out:json];(node[\"amenity\"~\"park|monument\"](around:5000," + lat + "," + lon + "););out body;";
+                Log.d("Overpass", "Consultando POIs em: lat=" + lat + ", lon=" + lon);
+                String query = "[out:json];(node[amenity](around:5000," + lat + "," + lon + ");node[leisure](around:5000," + lat + "," + lon + ");node[tourism](around:5000," + lat + "," + lon + ");node[shop](around:5000," + lat + "," + lon + "););out body;";
                 String url = "https://overpass-api.de/api/interpreter?data=" + URLEncoder.encode(query, "UTF-8");
+                Log.d("Overpass", "URL da consulta: " + url);
                 Request request = new Request.Builder().url(url).build();
                 Response response = client.newCall(request).execute();
                 String jsonData = response.body().string();
+                Log.d("Overpass", "Resposta da API (tamanho): " + jsonData.length() + " caracteres");
+                Log.d("Overpass", "Resposta da API: " + jsonData);
                 JSONObject json = new JSONObject(jsonData);
                 JSONArray elements = json.getJSONArray("elements");
                 poiList.clear();
-                for (int i = 0; i < elements.length(); i++) {
+                int[] animationFrames = {
+                        R.drawable.portalf01, R.drawable.portalf02, R.drawable.portalf03,
+                        R.drawable.portalf04, R.drawable.portalf05, R.drawable.portalf06,
+                        R.drawable.portalf07, R.drawable.portalf08, R.drawable.portalf09,
+                        R.drawable.portalf10
+                };
+                for (int i = 0; i < Math.min(elements.length(), 50); i++) {
                     JSONObject element = elements.getJSONObject(i);
                     double poiLat = element.getDouble("lat");
                     double poiLon = element.getDouble("lon");
                     String name = element.has("tags") && element.getJSONObject("tags").has("name") ?
                             element.getJSONObject("tags").getString("name") : "Portal Sem Nome";
-                    String type = element.getJSONObject("tags").has("amenity") ? "dungeon_natureza" : "dungeon_histórico";
-                    poiList.add(new PointOfInterest(new GeoPoint(poiLat, poiLon), "Portal para " + name, type, 0));
+                    String type = element.getJSONObject("tags").has("amenity") ? "dungeon_geral" :
+                            element.getJSONObject("tags").has("leisure") ? "dungeon_lazer" :
+                                    element.getJSONObject("tags").has("tourism") ? "dungeon_turismo" : "dungeon_comercial";
+                    poiList.add(new PointOfInterest(new GeoPoint(poiLat, poiLon), "Portal para " + name, type, 0, animationFrames));
+                    Log.d("Overpass", "POI adicionado: " + name + " (" + poiLat + ", " + poiLon + ")");
                 }
+                Log.d("Overpass", "Total de POIs carregados: " + poiList.size());
                 runOnUiThread(() -> {
                     mapView.getOverlays().clear();
                     mapView.getOverlays().add(myLocationOverlay);
                     addPoisToMap();
                     updatePoiScores(userLocation);
+                    Toast.makeText(Gps.this, "Carregados " + poiList.size() + " portais", Toast.LENGTH_SHORT).show();
                 });
             } catch (Exception e) {
-                Log.e("Overpass", "Erro ao carregar POIs: " + e.getMessage());
-                runOnUiThread(() -> Toast.makeText(Gps.this, "Falha ao carregar portais", Toast.LENGTH_SHORT).show());
+                Log.e("Overpass", "Erro ao carregar POIs: " + e.getMessage(), e);
+                runOnUiThread(() -> Toast.makeText(Gps.this, "Falha ao carregar portais: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         }).start();
     }
 
-    // Adiciona marcadores de portais ao mapa
     private void addPoisToMap() {
+        Log.d("Map", "Adicionando " + poiList.size() + " marcadores ao mapa");
+        double zoomLevel = mapView.getZoomLevelDouble();
+        Log.d("Map", "Nível de zoom atual: " + zoomLevel);
         for (PointOfInterest poi : poiList) {
             Marker marker = new Marker(mapView);
             marker.setPosition(poi.getLocation());
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             marker.setTitle(poi.getName() + " (" + poi.getType() + ")");
             marker.setSnippet("Pontos: " + String.format("%.2f", poi.getPreferenceScore()));
+            try {
+                // Escala o ícone com base no zoom
+                Drawable originalDrawable = getResources().getDrawable(poi.getAnimationFrames()[0], getTheme());
+                int scaledSize = (int) (BASE_ICON_SIZE * Math.pow(2, zoomLevel - BASE_ZOOM_LEVEL));
+                Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, scaledSize, scaledSize, true);
+                marker.setIcon(new BitmapDrawable(getResources(), scaledBitmap));
+                Log.d("Map", "Ícone inicial definido para: " + poi.getName() + " (tamanho: " + scaledSize + "x" + scaledSize + ")");
+            } catch (Exception e) {
+                Log.e("Map", "Erro ao definir ícone para " + poi.getName() + ": " + e.getMessage());
+            }
+            poi.setMarker(marker);
             marker.setOnMarkerClickListener((m, mapView) -> {
                 poi.setPreferenceScore(poi.getPreferenceScore() + 20);
                 m.setSnippet("Pontos: " + String.format("%.2f", poi.getPreferenceScore()));
@@ -219,27 +266,43 @@ public class Gps extends AppCompatActivity {
                 return true;
             });
             mapView.getOverlays().add(marker);
+            startMarkerAnimation(poi);
         }
         mapView.invalidate();
+        Log.d("Map", "Mapa invalidado para renderizar marcadores");
     }
 
-    // Calcula pontos de preferência
+    private void startMarkerAnimation(PointOfInterest poi) {
+        final int[] frameIndex = {0};
+        animationHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (poi.getMarker() != null && poi.getAnimationFrames().length > 0) {
+                    double zoomLevel = mapView.getZoomLevelDouble();
+                    frameIndex[0] = (frameIndex[0] + 1) % poi.getAnimationFrames().length;
+                    try {
+                        // Escala o frame com base no zoom atual
+                        Drawable originalDrawable = getResources().getDrawable(poi.getAnimationFrames()[frameIndex[0]], getTheme());
+                        int scaledSize = (int) (BASE_ICON_SIZE * Math.pow(2, zoomLevel - BASE_ZOOM_LEVEL));
+                        Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, scaledSize, scaledSize, true);
+                        poi.getMarker().setIcon(new BitmapDrawable(getResources(), scaledBitmap));
+                        Log.d("Animation", "Mudando para frame " + (frameIndex[0] + 1) + " em " + poi.getName() + " (tamanho: " + scaledSize + "x" + scaledSize + ")");
+                        mapView.invalidate();
+                    } catch (Exception e) {
+                        Log.e("Animation", "Erro ao mudar frame para " + poi.getName() + ": " + e.getMessage());
+                    }
+                }
+                animationHandler.postDelayed(this, ANIMATION_FRAME_INTERVAL);
+            }
+        }, ANIMATION_FRAME_INTERVAL);
+    }
+
     private void updatePoiScores(GeoPoint userLocation) {
         if (userLocation == null) return;
         for (PointOfInterest poi : poiList) {
             double distance = calculateDistance(userLocation, poi.getLocation());
-            double typeWeight;
-            switch (poi.getType()) {
-                case "dungeon_histórico":
-                    typeWeight = 1.5;
-                    break;
-                case "dungeon_natureza":
-                    typeWeight = 1.2;
-                    break;
-                default:
-                    typeWeight = 1.0;
-                    break;
-            }
+            double typeWeight = 1.0; // Peso uniforme para POIs generalizados
             double score = (100.0 / Math.max(distance, 1.0)) * typeWeight;
             poi.setPreferenceScore(score);
         }
@@ -248,7 +311,6 @@ public class Gps extends AppCompatActivity {
         addPoisToMap();
     }
 
-    // Calcula distância em metros usando Haversine
     private double calculateDistance(GeoPoint p1, GeoPoint p2) {
         double lat1 = Math.toRadians(p1.getLatitude());
         double lon1 = Math.toRadians(p1.getLongitude());
@@ -314,11 +376,13 @@ public class Gps extends AppCompatActivity {
             myLocationOverlay.disableFollowLocation();
         }
         locationHandler.removeCallbacksAndMessages(null);
+        animationHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         locationHandler.removeCallbacksAndMessages(null);
+        animationHandler.removeCallbacksAndMessages(null);
     }
 }
