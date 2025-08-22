@@ -22,12 +22,12 @@ plugins {
 
 android {
     namespace 'com.google.mediapipe.examples.poselandmarker'
-    compileSdk 33
+    compileSdk 34 // Updated from 33 to 34
 
     defaultConfig {
         applicationId "com.google.mediapipe.examples.poselandmarker"
         minSdk 24
-        targetSdk 33
+        targetSdk 33 // Kept 33, as it doesn’t need to change yet
         versionCode 1
         versionName "1.0"
 
@@ -51,26 +51,38 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res/drawable/tiles'] // Support for tiles folder
+        }
+    }
 }
 
-// import DownloadMPTasks task
+// Import DownloadMPTasks task
 project.ext.ASSET_DIR = projectDir.toString() + '/src/main/assets'
 apply from: 'download_tasks.gradle'
 
 dependencies {
-
     // Kotlin lang
     implementation 'androidx.core:core-ktx:1.8.0'
 
-    // map
+    // Map and location
     implementation 'com.google.android.gms:play-services-maps:18.2.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'org.osmdroid:osmdroid-android:6.1.18'
 
+    // HTTP client
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
+    // Room database for persistent storage
+    def room_version = "2.6.1"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // Removed room-ktx, as the project appears to be primarily Java-based
+    // implementation "androidx.room:room-ktx:$room_version"
 
-    // App compat and UI things
+    // App compat and UI
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -82,17 +94,11 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    // CameraX core library
+    // CameraX
     def camerax_version = '1.2.0-alpha02'
     implementation "androidx.camera:camera-core:$camerax_version"
-
-    // CameraX Camera2 extensions
     implementation "androidx.camera:camera-camera2:$camerax_version"
-
-    // CameraX Lifecycle library
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
-
-    // CameraX View class
     implementation "androidx.camera:camera-view:$camerax_version"
 
     // WindowManager

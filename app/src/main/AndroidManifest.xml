@@ -60,6 +60,7 @@
         <activity android:name=".Menu" />
         <activity android:name=".Missao" />
         <activity android:name=".FortalecimentoDoCorpo" />
+        <activity android:name=".DungeonActivity" />
 
         <activity
             android:name=".RunningTracker"
